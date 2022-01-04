@@ -7,10 +7,10 @@
 #include "scrabvision.h"
 #include "ui_scrabvision.h"
 #include "process_list_model.h"
+#include "windowutil.h"
 
-#include <QStringList>
-#include <QStringListModel>
 #include <QAbstractItemView>
+#include <string>
 
 
 ScrabVision::ScrabVision(QWidget *parent) :
@@ -27,8 +27,16 @@ ScrabVision::~ScrabVision() {
     delete ui;
 }
 
-void ScrabVision::onRefreshListButtonClicked()
+void ScrabVision::on_refreshListButton_clicked()
 {
+    auto windows = GetVisibleWindows();
 
+    for (std::tuple<int,std::string> window : windows) {
+        int pid;
+        std::string name;
+        std::tie(pid, name) = window;
+        qDebug() << "pid: " << pid << "window: " << name.c_str();
+    }
 }
+
 

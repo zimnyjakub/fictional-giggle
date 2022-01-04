@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 project(scrabvision)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
@@ -14,7 +14,7 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(scrabvision main.cpp scrabvision.cpp scrabvision.h scrabvision.ui process_list_model.cpp process_list_model.h)
+add_executable(scrabvision main.cpp scrabvision.cpp scrabvision.h scrabvision.ui process_list_model.cpp process_list_model.h windowutil.h)
 target_link_libraries(scrabvision
         Qt::Core
         Qt::Gui

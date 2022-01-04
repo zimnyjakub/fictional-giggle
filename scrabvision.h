@@ -9,6 +9,7 @@
 
 #include <QWidget>
 #include <QStringListModel>
+#include <Windows.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -21,15 +22,15 @@ Q_OBJECT
 public:
     explicit ScrabVision(QWidget *parent = nullptr);
 
-    ProcessListModel *model;
 
     ~ScrabVision() override;
 
 private slots:
-    void onRefreshListButtonClicked();
+    void on_refreshListButton_clicked();
 
 private:
     Ui::ScrabVision *ui;
+    ProcessListModel *model;
 };
 
 
