@@ -14,7 +14,7 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(scrabvision main.cpp scrabvision.cpp scrabvision.h scrabvision.ui)
+add_executable(scrabvision main.cpp scrabvision.cpp scrabvision.h scrabvision.ui process_list_model.cpp process_list_model.h)
 target_link_libraries(scrabvision
         Qt::Core
         Qt::Gui
