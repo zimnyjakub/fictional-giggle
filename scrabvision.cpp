@@ -51,7 +51,6 @@ void ScrabVision::on_refreshListButton_clicked() {
 
 void ScrabVision::on_useSelectedButton_clicked()
 {
-//    auto selection = ui->tableView->selectionModel()->selectedRows().first();
     auto selection = ui->tableView->selectionModel();
     if (!selection->hasSelection()) {
         return;

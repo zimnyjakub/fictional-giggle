@@ -7,18 +7,25 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_PREFIX_PATH "C:\\Qt\\6.2.2\\msvc2019_64\\lib\\cmake")
+set(OpenCV_DIR "C:\\tools\\opencv\\build\\x64\\vc15\\lib")
+
+include_directories("C:\\tools\\opencv\\build\\include")
+find_package(OpenCV REQUIRED)
 
 find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
-        REQUIRED)
+        REQUIRED
+        )
+
 
 add_executable(scrabvision main.cpp scrabvision.cpp scrabvision.h scrabvision.ui process_list_model.cpp process_list_model.h windowutil.h pidname.h)
 target_link_libraries(scrabvision
         Qt::Core
         Qt::Gui
         Qt::Widgets
+        ${OpenCV_LIBS}
         )
 
 if (WIN32)
