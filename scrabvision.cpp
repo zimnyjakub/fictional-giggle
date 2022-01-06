@@ -3,6 +3,8 @@
 //
 
 // You may need to build the project (run Qt uic code generator) to get "ui_ScrabVision.h" resolved
+#ifndef SCRABVISION_SCRABVISION_CPP
+#define SCRABVISION_SCRABVISION_CPP
 
 #include "scrabvision.h"
 #include "ui_scrabvision.h"
@@ -18,9 +20,9 @@ ScrabVision::ScrabVision(QWidget *parent) :
 
     ui->setupUi(this);
 
-    model = new ProcessListModel(this);
-
-    ui->processListView->setModel(model);
+    auto windows = GetVisibleWindows();
+    model = new ProcessListModel(windows, this);
+    ui->tableView->setModel(model);
 }
 
 ScrabVision::~ScrabVision() {
@@ -31,12 +33,11 @@ void ScrabVision::on_refreshListButton_clicked()
 {
     auto windows = GetVisibleWindows();
 
-    for (std::tuple<int,std::string> window : windows) {
-        int pid;
-        std::string name;
-        std::tie(pid, name) = window;
-        qDebug() << "pid: " << pid << "window: " << name.c_str();
+    for (const auto& window : windows) {
+        qDebug() << "pid: " << window.first << "window: " << window.second;
     }
 }
+
+#endif //SCRABVISION_SCRABVISION_CPP
 
 

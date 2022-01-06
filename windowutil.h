@@ -2,17 +2,21 @@
 // Created by zimny on 04.01.2022.
 //
 
-#ifndef SCRABVISION_WINDOWUTIL_CPP
-#define SCRABVISION_WINDOWUTIL_CPP
+#ifndef SCRABVISION_WINDOWUTIL_H
+#define SCRABVISION_WINDOWUTIL_H
 
+
+#include "pidname.h"
 
 #include <Windows.h>
 #include <tuple>
+#include <utility>
 #include <vector>
 #include <string>
 
-BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
-    auto vec = (std::vector<std::tuple<int,std::string>>*)lParam;
+
+BOOL CALLBACK Gibberish(HWND hWnd, LPARAM lParam) {
+    auto vec = (QVector<QPair<int,QString>> *) lParam;
     wchar_t buff[255];
     DWORD pid;
 
@@ -21,20 +25,20 @@ BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
         GetWindowThreadProcessId(hWnd, &pid);
 
         std::wstring ws(buff);
-        std::string test( ws.begin(), ws.end() );
-        vec->emplace_back((int)pid, test);
+        std::string test(ws.begin(), ws.end());
+        vec->push_back(QPair<int,QString>(pid, QString::fromStdString(test)));
     }
     return TRUE;
 }
 
 
-std::vector<std::tuple<int, std::string>> GetVisibleWindows() {
-    auto vec = std::vector<std::tuple<int, std::string>>();
+QVector<QPair<int,QString>> GetVisibleWindows() {
+    auto vec = QVector<QPair<int,QString>>();
 
-    EnumWindows(EnumWindowsProc, (LPARAM)&vec);
+    EnumWindows(Gibberish, (LPARAM) &vec);
 
     return vec;
 }
 
 
-#endif //SCRABVISION_WINDOWUTIL_CPP
+#endif //SCRABVISION_WINDOWUTIL_H
