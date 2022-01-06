@@ -49,8 +49,7 @@ void ScrabVision::on_refreshListButton_clicked() {
     }
 }
 
-void ScrabVision::on_useSelectedButton_clicked()
-{
+void ScrabVision::on_useSelectedButton_clicked() {
     auto selection = ui->tableView->selectionModel();
     if (!selection->hasSelection()) {
         return;
@@ -63,5 +62,17 @@ void ScrabVision::on_useSelectedButton_clicked()
     }
 }
 
-#endif //SCRABVISION_SCRABVISION_CPP
 
+void ScrabVision::on_debugButton_clicked() {
+    Mat image;
+    image = captureScreenMat(GetDesktopWindow());
+    if (!image.data) {
+        printf("No image data \n");
+        return;
+    }
+    namedWindow("Display Image", WINDOW_AUTOSIZE);
+    imshow("Display Image", image);
+    waitKey(0);
+}
+
+#endif //SCRABVISION_SCRABVSION_CPP

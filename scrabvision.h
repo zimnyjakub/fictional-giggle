@@ -32,6 +32,8 @@ private slots:
 
     void on_useSelectedButton_clicked();
 
+    void on_debugButton_clicked();
+
 private:
     Ui::ScrabVision *ui;
     ProcessListModel *model;

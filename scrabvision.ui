@@ -170,12 +170,19 @@
        <widget class="QPushButton" name="playPauseButton">
         <property name="minimumSize">
          <size>
-          <width>40</width>
+          <width>120</width>
           <height>0</height>
          </size>
         </property>
         <property name="text">
          <string>PlayPause</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="debugButton">
+        <property name="text">
+         <string>DEBUG</string>
         </property>
        </widget>
       </item>
