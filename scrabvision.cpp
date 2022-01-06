@@ -26,6 +26,7 @@ ScrabVision::ScrabVision(QWidget *parent) :
     ui->tableView->setColumnWidth(0, 60);
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+
 }
 
 ScrabVision::~ScrabVision() {
@@ -39,7 +40,6 @@ void ScrabVision::on_refreshListButton_clicked() {
     }
 
     for (const auto &window: windows) {
-
         model->insertRows(0, 1);
         auto ix = model->index(0, 0);
 
@@ -49,6 +49,20 @@ void ScrabVision::on_refreshListButton_clicked() {
     }
 }
 
-#endif //SCRABVISION_SCRABVISION_CPP
+void ScrabVision::on_useSelectedButton_clicked()
+{
+//    auto selection = ui->tableView->selectionModel()->selectedRows().first();
+    auto selection = ui->tableView->selectionModel();
+    if (!selection->hasSelection()) {
+        return;
+    }
+    auto items = selection->selectedRows().first();
+    if (items.isValid()) {
+        auto pid = model->data(model->index(items.row(), 0), Qt::DisplayRole).toInt();
+        selectedPid = pid;
+        ui->currentPidLabel->setText(QString::number(pid));
+    }
+}
 
+#endif //SCRABVISION_SCRABVISION_CPP
 

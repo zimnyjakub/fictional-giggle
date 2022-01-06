@@ -29,9 +29,13 @@ public:
 private slots:
     void on_refreshListButton_clicked();
 
+
+    void on_useSelectedButton_clicked();
+
 private:
     Ui::ScrabVision *ui;
     ProcessListModel *model;
+    int selectedPid;
 };
 
 
