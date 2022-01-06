@@ -23,6 +23,7 @@ public:
     explicit ScrabVision(QWidget *parent = nullptr);
 
 
+    void addEntry(const QPair<int, QString> &entry);
     ~ScrabVision() override;
 
 private slots:

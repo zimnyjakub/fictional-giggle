@@ -20,21 +20,32 @@ ScrabVision::ScrabVision(QWidget *parent) :
 
     ui->setupUi(this);
 
-    auto windows = GetVisibleWindows();
-    model = new ProcessListModel(windows, this);
+    model = new ProcessListModel(this);
+
     ui->tableView->setModel(model);
+    ui->tableView->setColumnWidth(0, 60);
+    ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 }
 
 ScrabVision::~ScrabVision() {
     delete ui;
 }
 
-void ScrabVision::on_refreshListButton_clicked()
-{
+void ScrabVision::on_refreshListButton_clicked() {
     auto windows = GetVisibleWindows();
+    if (model->rowCount() > 0) {
+        model->removeRows(0, model->rowCount());
+    }
 
-    for (const auto& window : windows) {
-        qDebug() << "pid: " << window.first << "window: " << window.second;
+    for (const auto &window: windows) {
+
+        model->insertRows(0, 1);
+        auto ix = model->index(0, 0);
+
+        model->setData(ix, window.first, Qt::EditRole);
+        ix = model->index(0, 1);
+        model->setData(ix, window.second, Qt::EditRole);
     }
 }
 

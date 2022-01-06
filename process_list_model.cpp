@@ -84,7 +84,7 @@ Qt::ItemFlags ProcessListModel::flags(const QModelIndex &index) const {
     if (!index.isValid())
         return Qt::ItemIsEnabled;
 
-    return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
+    return QAbstractTableModel::flags(index);
 }
 
 ProcessListModel::ProcessListModel(QVector<QPair<int, QString>> pairs, QObject *parent) : QAbstractTableModel(parent) {

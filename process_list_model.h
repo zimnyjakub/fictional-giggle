@@ -17,7 +17,7 @@ public:
     ProcessListModel(QObject *parent = nullptr);
     ProcessListModel(QVector<QPair<int,QString>> pairs, QObject *parent = nullptr);
 
-    int rowCount(const QModelIndex &parent) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
     int columnCount(const QModelIndex &parent) const override;
 
@@ -29,12 +29,13 @@ public:
 
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
-    bool removeRows(int row, int count, const QModelIndex &parent) override;
+    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
-    bool insertRows(int row, int count, const QModelIndex &parent) override;
+    bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+
+    QVector<QPair<int, QString>> processes;
 
 private:
-    QVector<QPair<int, QString>> processes;
 };
 
 
