@@ -8,6 +8,15 @@
 
 #include <QAbstractListModel>
 #include "pidname.h"
+#include <Windows.h>
+
+struct ProcessModel {
+    HWND hwnd;
+    int pid ;
+    QString name;
+};
+
+Q_DECLARE_METATYPE(HWND)
 
 class ProcessListModel : public QAbstractTableModel
 {
@@ -15,7 +24,7 @@ class ProcessListModel : public QAbstractTableModel
 
 public:
     ProcessListModel(QObject *parent = nullptr);
-    ProcessListModel(QVector<QPair<int,QString>> pairs, QObject *parent = nullptr);
+    ProcessListModel(QVector<ProcessModel> m, QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
@@ -33,7 +42,7 @@ public:
 
     bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
-    QVector<QPair<int, QString>> processes;
+    QVector<ProcessModel> processes;
 
 private:
 };

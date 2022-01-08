@@ -38,6 +38,7 @@ private:
     Ui::ScrabVision *ui;
     ProcessListModel *model;
     int selectedPid;
+    HWND selectedHwnd;
 };
 
 

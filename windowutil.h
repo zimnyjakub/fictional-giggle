@@ -19,7 +19,7 @@ using namespace cv;
 
 
 BOOL CALLBACK Gibberish(HWND hWnd, LPARAM lParam) {
-    auto vec = (QVector<QPair<int, QString>> *) lParam;
+    auto vec = (QVector<ProcessModel> *) lParam;
     wchar_t buff[255];
     DWORD pid;
 
@@ -29,14 +29,14 @@ BOOL CALLBACK Gibberish(HWND hWnd, LPARAM lParam) {
 
         std::wstring ws(buff);
         std::string test(ws.begin(), ws.end());
-        vec->push_back(QPair<int, QString>(pid, QString::fromStdString(test)));
+        vec->push_back(ProcessModel{hWnd, static_cast<int>(pid), QString::fromStdString(test)});
     }
     return TRUE;
 }
 
 
-QVector<QPair<int, QString>> GetVisibleWindows() {
-    auto vec = QVector<QPair<int, QString>>();
+QVector<ProcessModel> GetVisibleWindows() {
+    auto vec = QVector<ProcessModel>();
 
     EnumWindows(Gibberish, (LPARAM) &vec);
 

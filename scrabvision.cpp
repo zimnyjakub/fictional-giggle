@@ -43,9 +43,11 @@ void ScrabVision::on_refreshListButton_clicked() {
         model->insertRows(0, 1);
         auto ix = model->index(0, 0);
 
-        model->setData(ix, window.first, Qt::EditRole);
+        model->setData(ix, window.pid, Qt::EditRole);
         ix = model->index(0, 1);
-        model->setData(ix, window.second, Qt::EditRole);
+        model->setData(ix, window.name, Qt::EditRole);
+        ix = model->index(0, 2);
+        model->setData(ix, QVariant::fromValue(window.hwnd), Qt::EditRole);
     }
 }
 
@@ -59,15 +61,18 @@ void ScrabVision::on_useSelectedButton_clicked() {
         auto pid = model->data(model->index(items.row(), 0), Qt::DisplayRole).toInt();
         selectedPid = pid;
         ui->currentPidLabel->setText(QString::number(pid));
+        auto h = model->data(model->index(items.row(), 2), Qt::DisplayRole).value<HWND>();
+        selectedHwnd = h;
     }
 }
 
 
 void ScrabVision::on_debugButton_clicked() {
+    qDebug() << selectedHwnd;
     Mat image;
-    image = captureScreenMat(GetDesktopWindow());
+    image = captureScreenMat(selectedHwnd);
     if (!image.data) {
-        printf("No image data \n");
+        qDebug() << "No image data \n";
         return;
     }
     auto scene = new QGraphicsScene(this);

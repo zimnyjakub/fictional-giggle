@@ -17,12 +17,14 @@ QVariant ProcessListModel::data(const QModelIndex &index, int role) const {
         return {};
 
     if (role == Qt::DisplayRole) {
-        QPair<int, QString> pair = processes.at(index.row());
+        ProcessModel p = processes.at(index.row());
 
         if (index.column() == 0)
-            return pair.first;
+            return p.pid;
         else if (index.column() == 1)
-            return pair.second;
+            return p.name;
+        else if (index.column() == 2)
+            return QVariant::fromValue(p.hwnd);
     }
     return {};
 
@@ -36,7 +38,7 @@ ProcessListModel::ProcessListModel(QObject *parent) : QAbstractTableModel(parent
 }
 
 int ProcessListModel::columnCount(const QModelIndex &parent) const {
-    return 2;
+    return 3;
 }
 
 QVariant ProcessListModel::headerData(int section, Qt::Orientation orientation, int role) const {
@@ -62,14 +64,16 @@ bool ProcessListModel::setData(const QModelIndex &index, const QVariant &value, 
     if (index.isValid() && role == Qt::EditRole) {
         int row = index.row();
 
-        QPair<int, QString> p = processes.value(row);
+        auto p = processes.at(row);
 
-        if (index.column() == 0)
-            p.first =  value.toInt();
-        else if (index.column() == 1)
-            p.second = value.toString();
-        else
+        if (index.column() == 0) { p.pid = value.toInt(); }
+        else if (index.column() == 1) { p.name = value.toString(); }
+        else if (index.column() == 2) {
+            auto h = qvariant_cast<HWND>(value);
+            p.hwnd = h;
+        } else
             return false;
+
 
         processes.replace(row, p);
         emit(dataChanged(index, index));
@@ -87,16 +91,16 @@ Qt::ItemFlags ProcessListModel::flags(const QModelIndex &index) const {
     return QAbstractTableModel::flags(index);
 }
 
-ProcessListModel::ProcessListModel(QVector<QPair<int, QString>> pairs, QObject *parent) : QAbstractTableModel(parent) {
-    processes = std::move(pairs);
+ProcessListModel::ProcessListModel(QVector <ProcessModel> m, QObject *parent) : QAbstractTableModel(parent) {
+    processes = std::move(m);
 }
 
 bool ProcessListModel::insertRows(int row, int count, const QModelIndex &parent) {
-    beginInsertRows(QModelIndex(), row, row+count-1);
+    beginInsertRows(QModelIndex(), row, row + count - 1);
 
-    for (int i=0; i < count; i++) {
-        QPair<int, QString> pair(0, " ");
-        processes.insert(i, pair);
+    for (int i = 0; i < count; i++) {
+        ProcessModel p{nullptr, 0, "TODOME"};
+        processes.insert(i, p);
     }
 
     endInsertRows();
@@ -104,9 +108,9 @@ bool ProcessListModel::insertRows(int row, int count, const QModelIndex &parent)
 }
 
 bool ProcessListModel::removeRows(int row, int count, const QModelIndex &parent) {
-    beginRemoveRows(QModelIndex(), row, row+count-1);
+    beginRemoveRows(QModelIndex(), row, row + count - 1);
 
-    for (int i=0; row < count; ++row) {
+    for (int i = 0; row < count; ++row) {
         processes.removeAt(i);
     }
 
