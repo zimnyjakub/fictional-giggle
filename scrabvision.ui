@@ -111,6 +111,12 @@
       </item>
       <item>
        <widget class="QGroupBox" name="groupBox_3">
+        <property name="maximumSize">
+         <size>
+          <width>250</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="title">
          <string>Suggestions</string>
         </property>
