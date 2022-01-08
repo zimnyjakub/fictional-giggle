@@ -64,6 +64,8 @@ BITMAPINFOHEADER createBitmapHeader(int width, int height) {
 
 Mat captureScreenMat(HWND hwnd) {
     Mat src;
+    RECT rc;
+    GetClientRect(hwnd, &rc);
 
     // get handles to a device context (DC)
     HDC hwindowDC = GetDC(hwnd);
@@ -71,10 +73,8 @@ Mat captureScreenMat(HWND hwnd) {
     SetStretchBltMode(hwindowCompatibleDC, COLORONCOLOR);
 
     // define scale, height and width
-    int screenx = GetSystemMetrics(SM_XVIRTUALSCREEN);
-    int screeny = GetSystemMetrics(SM_YVIRTUALSCREEN);
-    int width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-    int height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+    int width = rc.right - rc.left;
+    int height = rc.bottom - rc.top;
 
     // create mat object
     src.create(height, width, CV_8UC4);
@@ -85,10 +85,8 @@ Mat captureScreenMat(HWND hwnd) {
 
     // use the previously created device context with the bitmap
     SelectObject(hwindowCompatibleDC, hbwindow);
+    PrintWindow(hwnd, hwindowCompatibleDC, PW_CLIENTONLY);
 
-    // copy from the window device context to the bitmap device context
-    StretchBlt(hwindowCompatibleDC, 0, 0, width, height, hwindowDC, screenx, screeny, width, height,
-               SRCCOPY);  //change SRCCOPY to NOTSRCCOPY for wacky colors !
     GetDIBits(hwindowCompatibleDC, hbwindow, 0, height, src.data, (BITMAPINFO *) &bi,
               DIB_RGB_COLORS);            //copy from hwindowCompatibleDC to hbwindow
 
