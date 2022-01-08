@@ -70,9 +70,15 @@ void ScrabVision::on_debugButton_clicked() {
         printf("No image data \n");
         return;
     }
-    namedWindow("Display Image", WINDOW_AUTOSIZE);
-    imshow("Display Image", image);
-    waitKey(0);
+    auto scene = new QGraphicsScene(this);
+    ui->graphicsView->setScene(scene);
+
+    cvtColor(image, image, COLOR_BGRA2RGBA);
+
+
+    QImage qImg(image.data, image.cols, image.rows, image.step, QImage::Format_RGBA8888_Premultiplied);
+    auto pixImg = QPixmap::fromImage(qImg);
+    scene->addPixmap(pixImg);
 }
 
 #endif //SCRABVISION_SCRABVSION_CPP
