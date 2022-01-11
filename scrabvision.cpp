@@ -10,6 +10,7 @@
 #include "ui_scrabvision.h"
 #include "process_list_model.h"
 #include "windowutil.h"
+#include "rect_area.h"
 
 #include <QAbstractItemView>
 #include <string>
@@ -20,12 +21,15 @@ ScrabVision::ScrabVision(QWidget *parent) :
 
     ui->setupUi(this);
 
+
     model = new ProcessListModel(this);
 
     ui->tableView->setModel(model);
     ui->tableView->setColumnWidth(0, 60);
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    rectArea = new RectArea(ui->tab);
 
     on_debugButton_clicked();
 }
@@ -78,14 +82,15 @@ void ScrabVision::on_debugButton_clicked() {
         return;
     }
     auto scene = new QGraphicsScene(this);
-    ui->graphicsView->setScene(scene);
+//    ui->graphicsView->setScene(scene);
 
     cvtColor(originalCapture, originalCapture, COLOR_BGRA2RGBA);
 
 
+
     QImage qImg(originalCapture.data, originalCapture.cols, originalCapture.rows, originalCapture.step, QImage::Format_RGBA8888_Premultiplied);
-    auto pixImg = QPixmap::fromImage(qImg);
-    scene->addPixmap(pixImg);
+    rectArea->resize(800,600); // todo -> get size from image
+    rectArea->setImage(qImg);
 }
 
 #endif //SCRABVISION_SCRABVSION_CPP

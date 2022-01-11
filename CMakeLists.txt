@@ -20,7 +20,7 @@ find_package(Qt6 COMPONENTS
         )
 
 
-add_executable(scrabvision main.cpp scrabvision.cpp scrabvision.h scrabvision.ui process_list_model.cpp process_list_model.h windowutil.h pidname.h)
+add_executable(scrabvision main.cpp scrabvision.cpp scrabvision.h scrabvision.ui process_list_model.cpp process_list_model.h windowutil.h pidname.h rect_area.cpp rect_area.h)
 target_link_libraries(scrabvision
         Qt::Core
         Qt::Gui

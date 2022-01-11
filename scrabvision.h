@@ -6,6 +6,7 @@
 #define SCRABVISION_SCRABVISION_H
 
 #include "process_list_model.h"
+#include "rect_area.h"
 
 #include <QWidget>
 #include <QStringListModel>
@@ -39,6 +40,8 @@ private:
     ProcessListModel *model;
     int selectedPid;
     HWND selectedHwnd;
+
+    RectArea *rectArea;
 
     cv::Mat originalCapture;
 };
