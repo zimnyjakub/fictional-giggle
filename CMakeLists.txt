@@ -28,6 +28,9 @@ target_link_libraries(scrabvision
         ${OpenCV_LIBS}
         )
 
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/800x600.png
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 if (WIN32)
     set(DEBUG_SUFFIX)
     if (CMAKE_BUILD_TYPE MATCHES "Debug")

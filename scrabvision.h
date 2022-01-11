@@ -39,6 +39,8 @@ private:
     ProcessListModel *model;
     int selectedPid;
     HWND selectedHwnd;
+
+    cv::Mat originalCapture;
 };
 
 

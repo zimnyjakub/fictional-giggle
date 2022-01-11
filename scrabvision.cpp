@@ -16,7 +16,7 @@
 
 
 ScrabVision::ScrabVision(QWidget *parent) :
-        QWidget(parent), ui(new Ui::ScrabVision) {
+    QWidget(parent), ui(new Ui::ScrabVision) {
 
     ui->setupUi(this);
 
@@ -27,6 +27,7 @@ ScrabVision::ScrabVision(QWidget *parent) :
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
+    on_debugButton_clicked();
 }
 
 ScrabVision::~ScrabVision() {
@@ -69,19 +70,20 @@ void ScrabVision::on_useSelectedButton_clicked() {
 
 void ScrabVision::on_debugButton_clicked() {
     qDebug() << selectedHwnd;
-    Mat image;
-    image = captureScreenMat(selectedHwnd);
-    if (!image.data) {
+//    originalCapture = captureScreenMat(selectedHwnd);
+    originalCapture = cv::imread("800x600.png", cv::IMREAD_COLOR);
+    if (!originalCapture.data) {
+
         qDebug() << "No image data \n";
         return;
     }
     auto scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
 
-    cvtColor(image, image, COLOR_BGRA2RGBA);
+    cvtColor(originalCapture, originalCapture, COLOR_BGRA2RGBA);
 
 
-    QImage qImg(image.data, image.cols, image.rows, image.step, QImage::Format_RGBA8888_Premultiplied);
+    QImage qImg(originalCapture.data, originalCapture.cols, originalCapture.rows, originalCapture.step, QImage::Format_RGBA8888_Premultiplied);
     auto pixImg = QPixmap::fromImage(qImg);
     scene->addPixmap(pixImg);
 }

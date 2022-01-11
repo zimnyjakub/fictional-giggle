@@ -9,6 +9,7 @@
 #include <QAbstractListModel>
 #include "pidname.h"
 #include <Windows.h>
+#include <opencv2/opencv.hpp>
 
 struct ProcessModel {
     HWND hwnd;
