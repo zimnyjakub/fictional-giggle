@@ -9,37 +9,49 @@
 #include <QWidget>
 #include <utility>
 
-class RectArea : public QWidget{
+class RectArea : public QWidget {
 
-    Q_OBJECT
+Q_OBJECT
 
 public:
     RectArea(QWidget *parent = nullptr);
-    bool isModified() const {return modified;}
-    void setImage(QImage img) {image = std::move(img); modified = true;}
+
+    void setImage(const QImage& img) {
+        originalImage = img,
+        image = img;
+    }
+
 public slots:
+
     void clearImage();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
+
     void mouseMoveEvent(QMouseEvent *event) override;
+
     void mouseReleaseEvent(QMouseEvent *event) override;
+
     void paintEvent(QPaintEvent *event) override;
+
     void resizeEvent(QResizeEvent *event) override;
 
 
-
 private:
-    void drawLineTo(const QPoint &endPoint);
+
+    void drawRectangleTo(const QPoint &endPoint);
     void resizeImage(QImage *image, const QSize &newSize);
 
-    bool modified = false;
     bool drawing = false;
     int penWidth = 1;
     QColor penColor = Qt::blue;
 
     QImage image;
     QPoint lastPoint;
+    QPoint startPoint;
+
+    QImage originalImage;
+    QRect tempRect;
 };
 
 

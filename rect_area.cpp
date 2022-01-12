@@ -12,27 +12,31 @@ RectArea::RectArea(QWidget *parent) : QWidget(parent) {
 }
 
 void RectArea::clearImage() {
-    image.fill(qRgb(255, 255, 255));
-    modified = true;
+    image = originalImage;
+    lastPoint = QPoint();
     update();
 }
 
 void RectArea::mousePressEvent(QMouseEvent *event) {
-    if (event->button() == Qt::LeftButton) {
+    if (event->button() == Qt::LeftButton && lastPoint.isNull()) {
         lastPoint = event->pos();
+        startPoint = event->pos();
         drawing = true;
     }
 }
 
 void RectArea::mouseMoveEvent(QMouseEvent *event) {
     if ((event->buttons() & Qt::LeftButton) && drawing) {
-        drawLineTo(event->pos());
+        drawRectangleTo(event->pos());
     }
 }
 
 void RectArea::mouseReleaseEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton && drawing) {
-        drawLineTo(event->pos());
+        QPainter painter(&image);
+        painter.setPen(QPen(penColor, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        painter.drawRect(tempRect);
+        update();
         drawing = false;
     }
 }
@@ -41,23 +45,9 @@ void RectArea::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
     QRect dirtyRect = event->rect();
     painter.drawImage(dirtyRect, image, dirtyRect);
-}
-
-void RectArea::drawLineTo(const QPoint &endPoint) {
-    QPainter painter(&image);
-
-    painter.setPen(QPen(penColor, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter.drawLine(lastPoint, endPoint);
-
-    modified = true;
-
-    int rad = (penWidth / 2) + 2;
-
-    update(QRect(lastPoint, endPoint).normalized()
-                   .adjusted(-rad, -rad, +rad, +rad));
-    lastPoint = endPoint;
-
-    lastPoint = endPoint;
+    if (drawing) {
+        painter.drawRect(tempRect);
+    }
 }
 
 void RectArea::resizeEvent(QResizeEvent *event) {
@@ -79,4 +69,11 @@ void RectArea::resizeImage(QImage *image, const QSize &newSize) {
     QPainter painter(&newImage);
     painter.drawImage(QPoint(0, 0), *image);
     *image = newImage;
+}
+
+void RectArea::drawRectangleTo(const QPoint &endPoint) {
+    QPainter painter(&image);
+    painter.setPen(QPen(penColor, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    tempRect = QRect(startPoint.x(), startPoint.y(), endPoint.x() - startPoint.x(), endPoint.y() - startPoint.y());
+    update();
 }

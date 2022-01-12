@@ -31,6 +31,8 @@ ScrabVision::ScrabVision(QWidget *parent) :
 
     rectArea = new RectArea(ui->tab);
 
+    connect(ui->clearSelectionButton, &QPushButton::clicked, rectArea, &RectArea::clearImage);
+
     on_debugButton_clicked();
 }
 
