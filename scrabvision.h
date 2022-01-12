@@ -35,6 +35,8 @@ private slots:
 
     void on_debugButton_clicked();
 
+    void selectionChanged(QRect newSelection);
+
 private:
     Ui::ScrabVision *ui;
     ProcessListModel *model;

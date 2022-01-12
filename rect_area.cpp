@@ -38,6 +38,8 @@ void RectArea::mouseReleaseEvent(QMouseEvent *event) {
         painter.drawRect(tempRect);
         update();
         drawing = false;
+
+        emit rectChanged(tempRect);
     }
 }
 

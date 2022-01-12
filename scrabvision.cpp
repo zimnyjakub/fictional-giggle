@@ -17,7 +17,7 @@
 
 
 ScrabVision::ScrabVision(QWidget *parent) :
-    QWidget(parent), ui(new Ui::ScrabVision) {
+        QWidget(parent), ui(new Ui::ScrabVision) {
 
     ui->setupUi(this);
 
@@ -32,6 +32,7 @@ ScrabVision::ScrabVision(QWidget *parent) :
     rectArea = new RectArea(ui->tab);
 
     connect(ui->clearSelectionButton, &QPushButton::clicked, rectArea, &RectArea::clearImage);
+    connect(rectArea, &RectArea::rectChanged, this, &ScrabVision::selectionChanged);
 
     on_debugButton_clicked();
 }
@@ -89,10 +90,15 @@ void ScrabVision::on_debugButton_clicked() {
     cvtColor(originalCapture, originalCapture, COLOR_BGRA2RGBA);
 
 
-
-    QImage qImg(originalCapture.data, originalCapture.cols, originalCapture.rows, originalCapture.step, QImage::Format_RGBA8888_Premultiplied);
-    rectArea->resize(800,600); // todo -> get size from image
+    QImage qImg(originalCapture.data, originalCapture.cols, originalCapture.rows, originalCapture.step,
+                QImage::Format_RGBA8888_Premultiplied);
+    rectArea->resize(800, 600); // todo -> get size from image
     rectArea->setImage(qImg);
+}
+
+void ScrabVision::selectionChanged(QRect newSelection) {
+    ui->selectionLabel->setText(QString::number(newSelection.width()) + "x" + QString::number(newSelection.height()));
+
 }
 
 #endif //SCRABVISION_SCRABVSION_CPP

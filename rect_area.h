@@ -36,6 +36,10 @@ protected:
 
     void resizeEvent(QResizeEvent *event) override;
 
+signals:
+    void rectChanged(const QRect& rect);
+
+
 
 private:
 
