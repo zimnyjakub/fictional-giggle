@@ -45,6 +45,8 @@ private:
 
     RectArea *rectArea;
 
+    QImage croppedImage;
+
     cv::Mat originalCapture;
 };
 

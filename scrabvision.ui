@@ -251,7 +251,7 @@
             </attribute>
             <layout class="QGridLayout" name="gridLayout_2">
              <item row="0" column="0">
-              <widget class="QGraphicsView" name="graphicsView_2"/>
+              <widget class="QGraphicsView" name="croppedImage"/>
              </item>
             </layout>
            </widget>

@@ -77,28 +77,33 @@ void ScrabVision::on_useSelectedButton_clicked() {
 
 void ScrabVision::on_debugButton_clicked() {
     qDebug() << selectedHwnd;
-//    originalCapture = captureScreenMat(selectedHwnd);
-    originalCapture = cv::imread("800x600.png", cv::IMREAD_COLOR);
+    originalCapture = captureScreenMat(selectedHwnd);
+//    originalCapture = cv::imread("800x600.png", cv::IMREAD_COLOR);
     if (!originalCapture.data) {
 
         qDebug() << "No image data \n";
         return;
     }
-    auto scene = new QGraphicsScene(this);
-//    ui->graphicsView->setScene(scene);
 
     cvtColor(originalCapture, originalCapture, COLOR_BGRA2RGBA);
 
-
     QImage qImg(originalCapture.data, originalCapture.cols, originalCapture.rows, originalCapture.step,
                 QImage::Format_RGBA8888_Premultiplied);
-    rectArea->resize(800, 600); // todo -> get size from image
+    rectArea->resize(originalCapture.cols, originalCapture.rows);
     rectArea->setImage(qImg);
 }
 
 void ScrabVision::selectionChanged(QRect newSelection) {
     ui->selectionLabel->setText(QString::number(newSelection.width()) + "x" + QString::number(newSelection.height()));
 
+    auto scene = new QGraphicsScene(this);
+    ui->croppedImage->setScene(scene);
+
+    QImage qImg(originalCapture.data, originalCapture.cols, originalCapture.rows, originalCapture.step,
+                QImage::Format_RGBA8888_Premultiplied);
+    QImage cropped = qImg.copy(newSelection);
+
+    scene->addPixmap(QPixmap::fromImage(cropped));
 }
 
 #endif //SCRABVISION_SCRABVSION_CPP
