@@ -77,8 +77,8 @@ void ScrabVision::on_useSelectedButton_clicked() {
 
 void ScrabVision::on_debugButton_clicked() {
     qDebug() << selectedHwnd;
-    originalCapture = captureScreenMat(selectedHwnd);
-//    originalCapture = cv::imread("800x600.png", cv::IMREAD_COLOR);
+//    originalCapture = captureScreenMat(selectedHwnd);
+    originalCapture = cv::imread("img.png", cv::IMREAD_COLOR);
     if (!originalCapture.data) {
 
         qDebug() << "No image data \n";
